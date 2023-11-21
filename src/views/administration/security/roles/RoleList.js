@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,12 +16,16 @@ import {
 
 // project imports
 
-import { useDispatch, useSelector } from 'store';
+import {useDispatch, useSelector} from 'store';
 
 // assets
 import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
 import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
-import {searchRoles} from "../../../../store/slices/administration/security/roleSlice";
+import {roleActions} from "../../../../store/slices/administration/security/roleSlice";
+import {useQuery} from "react-query";
+import {Request} from "../../../../utils/axios";
+import FloatingAlert from "../../../ui-elements/custom/FloatingAlert";
+import {feedBackActions} from "../../../../store/slices/feedBackSlice";
 
 //const avatarImage = require.context('assets/images/users', true);
 
@@ -32,13 +36,26 @@ const RoleList = () => {
     const dispatch = useDispatch();
 
     //const [data, setData] = React.useState([]);
-    const { roles } = useSelector((state) => state.role);
+    const { roles, page, size, key} = useSelector((state) => state.role);
 
     React.useEffect(() => {
-        dispatch(searchRoles());
+        //dispatch(searchRoles());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const {data, isSuccess, isLoading, isError, error} = useQuery(['searchRoles', page, size, key], ()=>Request({url: `/roles/search?page=${page}&size=${size}&key=${key}`}))
+    useEffect(()=>
+    {
+        if(isLoading) dispatch(roleActions.searchPending())
+        if(isSuccess) {
+            dispatch(roleActions.searchFulfilled(data.data))
+        }
+        if(isError) {
+            dispatch(roleActions.searchFailed(error))
+            dispatch(feedBackActions.operationFailed(error))
+        }
+
+    }, [data, isSuccess, isLoading, isError, error]);
     return (
         <TableContainer>
             <Table size="small">
@@ -87,6 +104,7 @@ const RoleList = () => {
                         ))}
                 </TableBody>
             </Table>
+            <FloatingAlert />
         </TableContainer>
     );
 };

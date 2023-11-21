@@ -19,6 +19,8 @@ import authReducer from "./slices/authSlice";
 import typeReducer from "./slices/administration/params/typeSlice";
 import roleReducer from "./slices/administration/security/roleSlice";
 import privilegeReducer from "./slices/administration/security/privilegeSlice";
+import feedBackReducer from "./slices/feedBackSlice";
+import transferListReducer from "./slices/transferListSlice";
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -45,6 +47,8 @@ const reducer = combineReducers({
     type: typeReducer,
     role: roleReducer,
     privilege: privilegeReducer,
+    feedBack: feedBackReducer,
+    transferList: transferListReducer
 });
 
 export default reducer;

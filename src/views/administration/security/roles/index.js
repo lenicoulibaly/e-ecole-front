@@ -13,8 +13,8 @@ import { gridSpacing } from 'store/constant';
 import { IconSearch } from '@tabler/icons-react';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {dispatch, useSelector} from "../../../../store";
-import {roleActions, searchRoles} from "../../../../store/slices/administration/security/roleSlice";
-import NewRoleForm from "./NewRoleForm";
+import {roleActions} from "../../../../store/slices/administration/security/roleSlice";
+import RoleForm from "./RoleForm";
 
 
 const RoleListIndex = () => {
@@ -22,19 +22,16 @@ const RoleListIndex = () => {
     const onPageChange = page=>
     {
         dispatch(roleActions.pageChanged(page))
-        dispatch(searchRoles());
     }
     const onSizeChange = size=>
     {
         dispatch(roleActions.sizeChanged(size))
         dispatch(roleActions.pageChanged(0))
-        dispatch(searchRoles());
     }
     const onRoleKeyChange = (key)=>
     {
         dispatch(roleActions.keyChanged(key))
         dispatch(roleActions.pageChanged(0))
-        dispatch(searchRoles());
     }
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -64,7 +61,7 @@ const RoleListIndex = () => {
                     </Grid>
                     <Grid item>
                         <Typography variant="h3">
-                            <NewRoleForm />
+                            <RoleForm />
                         </Typography>
                     </Grid>
 

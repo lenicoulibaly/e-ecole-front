@@ -16,11 +16,13 @@ import {
 
 // project imports
 
-import {useSelector } from 'store';
+import {dispatch, useSelector} from 'store';
 
 // assets
-import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
 import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
+import {Edit} from "@mui/icons-material";
+import {FormMode} from "../../../../enums/FormMode";
+import {privilegeActions} from "../../../../store/slices/administration/security/privilegeSlice";
 
 //const avatarImage = require.context('assets/images/users', true);
 
@@ -37,6 +39,10 @@ const PrivilegeList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleClickUpdate = (prv)=>
+    {
+        dispatch(privilegeActions.formOpened({currentPrv: {...prv}, formMode: FormMode.UPDATE}))
+    }
     return (
         <TableContainer>
             <Table size="small">
@@ -63,9 +69,9 @@ const PrivilegeList = () => {
                                 <TableCell>{row.prvTypeName}</TableCell>
                                 <TableCell align="center" sx={{ pr: 3 }}>
                                     <Stack direction="row" justifyContent="center" alignItems="center">
-                                        <Tooltip placement="top" title="Message">
-                                            <IconButton color="primary" aria-label="delete" size="large">
-                                                <ChatBubbleTwoToneIcon sx={{ fontSize: '1.1rem' }} />
+                                        <Tooltip placement="top" title="Modifier">
+                                            <IconButton color="primary" aria-label="delete" size="large" onClick={()=>handleClickUpdate(row)}>
+                                                <Edit sx={{ fontSize: '1.1rem' }} />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Block">

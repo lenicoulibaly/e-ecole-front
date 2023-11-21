@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {store} from "../../../index";
 import {Request} from "../../../../utils/axios";
+import {FormMode} from "../../../../enums/FormMode";
 
 export const searchTypes = createAsyncThunk('/types/search', ()=>
 {
@@ -11,12 +12,12 @@ export const searchTypes = createAsyncThunk('/types/search', ()=>
     return Request({url:`/types/search?key=${key}&typeGroups=${typeGroups}&page=${typePage}&size=5`})
         .then(resp=> {return resp.data})
 })
-const initialType = {uniqueCode: '', name: '', typeGroup: ''};
+const initialType = {uniqueCode: '', name: '', typeGroup: '', oldUniqueCode: ''};
 const typeSlice = createSlice(
     {
     name: "type",
     initialState: {loading: false, types: {}, error: '', typeKey: '', typePage: 0, typeGroups: [],
-        formOpened: false, currentType: initialType},
+        formOpened: false, currentType: initialType, formMode: FormMode.NEW},
     reducers:
     {
         typeKeyChanged: (state, action) =>
@@ -34,12 +35,13 @@ const typeSlice = createSlice(
         typeFormOpened: (state, action)=>
         {
             state.formOpened = true;
-            state.currentType = action.payload
+            state.currentType = action.payload.currentType
+            state.formMode = action.payload.formMode
         },
         typeFormClosed: (state)=>
         {
             state.formOpened = false;
-            state.currentType = initialType;
+            state.currentType = initialType
         }
     },
     extraReducers: builder =>

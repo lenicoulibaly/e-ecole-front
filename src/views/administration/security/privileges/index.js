@@ -23,7 +23,7 @@ import { gridSpacing } from 'store/constant';
 import { IconSearch } from '@tabler/icons-react';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {dispatch, useSelector} from "../../../../store";
-import NewPrivilegeForm from "./NewPrivilegeForm";
+import PrivilegeForm from "./PrivilegeForm";
 import {privilegeActions} from "../../../../store/slices/administration/security/privilegeSlice";
 import {useQuery} from "react-query";
 import * as PrvRequests from "../../../../services/requests/privilege/PrivilegeRequests"
@@ -34,24 +34,18 @@ import {Request} from "../../../../utils/axios";
 const PrivilegeListIndex = () =>
 {
     const {key, page, size, prvTypeCodes} = useSelector((state) => state.privilege)
-    /*const searchPrivilege = async () => {
-        try {
-            const response = await axios.get(`http://localhost:7000/privileges/open/search?key=${key}&page=${page}&size=${size}&typePrvUniqueCodes=${typePrvCodes}`);
-            return response.data;
-        } catch (error) {
-            console.log (error); // You can handle errors further in your component
-        }
-    };*/
+
+    console.log('page', page);
     const searchPrivileges = ()=> Request({url: `/privileges/search?page=${page}&size=${size}&key=${key}&typePrvUniqueCodes=${prvTypeCodes}`
     }).then(resp=>resp.data).catch(err=>err)
-    const {data, isSuccess, isLoading, isError, error} = useQuery(["searchPrivilege", page, size, key, prvTypeCodes], searchPrivileges, {refetchOnWindowFocus: false});
+    const {data, isSuccess, isLoading, isError, error} = useQuery(["searchPrivileges", page, size, key, prvTypeCodes], searchPrivileges, {refetchOnWindowFocus: false});
     const {data: options, isSuccess: optionSuccess} = useQuery('searchPrvTypes', PrvRequests.getPrvTypes, {refetchOnWindowFocus: false});
     
     useEffect(() => {
         if (isLoading) {
             dispatch(privilegeActions.searchPrivilegesPending());
         }
-        if (isSuccess) {
+        if (isSuccess) { console.log('sucess = ', data);
             dispatch(privilegeActions.searchPrivilegesFulfilled(data));
         }
         if (isError) {
@@ -117,7 +111,7 @@ const PrivilegeListIndex = () =>
                     </Grid>}
                     <Grid item>
                         <Typography variant="h3">
-                            <NewPrivilegeForm />
+                            <PrivilegeForm />
                         </Typography>
                     </Grid>
 

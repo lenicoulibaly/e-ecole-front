@@ -20,9 +20,10 @@ import { useDispatch, useSelector } from 'store';
 //import { getUsersListStyle1 } from 'store/slices/user';
 
 // assets
-import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
 import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
 import {searchTypes, typeActions} from "../../../../store/slices/administration/params/typeSlice";
+import {FormMode} from "../../../../enums/FormMode";
+import {Edit} from "@mui/icons-material";
 
 //const avatarImage = require.context('assets/images/users', true);
 
@@ -69,9 +70,9 @@ const TypeList = () => {
                                 <TableCell>{row.typeGroup}</TableCell>
                                 <TableCell align="center" sx={{ pr: 3 }}>
                                     <Stack direction="row" justifyContent="center" alignItems="center">
-                                        <Tooltip placement="top" title="Message">
-                                            <IconButton color="primary" aria-label="delete" size="large" onClick={()=>{dispatch(typeActions.typeFormOpened(row))}} >
-                                                <ChatBubbleTwoToneIcon sx={{ fontSize: '1.1rem' }} />
+                                        <Tooltip placement="top" title="Modifier">
+                                            <IconButton color="primary" aria-label="delete" size="large" onClick={()=>{dispatch(typeActions.typeFormOpened({currentType: {...row, oldUniqueCode: row.uniqueCode}, formMode: FormMode.UPDATE}))}} >
+                                                <Edit sx={{ fontSize: '1.1rem' }} />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Block">
