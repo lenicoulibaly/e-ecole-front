@@ -150,5 +150,11 @@
 
     "more-items": "More Items",
     "administration": "Administration",
-
+    "paramètres": "Paramètres",
+    "utilisateurs": "Utilisateurs",
+    "rôles": "Rôles",
+    "privilèges": "Privilèges",
+    "types": "Types",
+    "filières": "Filières",
+    "droit d'accès": "Droit d'accès"
 }
