@@ -33,7 +33,7 @@ const getAxiosClient = (tokenKey, {...options})=>
     const onSuccess = (response)=>response;
     const onError = (error)=>
     {
-        return error;
+        throw error;
     }
     return axiosServices({...options}).then(onSuccess).catch(onError);
 }
