@@ -6,7 +6,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 
 // ===============================|| UI DIALOG - SWEET ALERT ||=============================== //
 
-export default function AlertDialog() {
+export default function AlertDialog({openLabel='Enregistrer', title='Confirmation',
+                                        message = 'Confirmez-vous l\'enregistrement ?',actionDisabled=true,
+                                        type='submit', confirmLabel='Confirmer', cancelLabel='Annuler', handleConfirmation}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
@@ -17,10 +19,15 @@ export default function AlertDialog() {
         setOpen(false);
     };
 
+    const onConfirm = ()=>
+    {
+        handleConfirmation();
+        setOpen(false);
+    }
     return (
         <>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open alert dialog
+            <Button disabled={actionDisabled} variant="outlined" onClick={handleClickOpen}>
+                {openLabel}
             </Button>
             <Dialog
                 open={open}
@@ -31,12 +38,11 @@ export default function AlertDialog() {
             >
                 {open && (
                     <>
-                        <DialogTitle id="alert-dialog-title">Use Google&apos;s location service?</DialogTitle>
+                        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
                                 <Typography variant="body2" component="span">
-                                    Let Google help apps determine location. This means sending anonymous location data to Google, even when
-                                    no apps are running.
+                                    {message}
                                 </Typography>
                             </DialogContentText>
                         </DialogContent>
@@ -46,10 +52,10 @@ export default function AlertDialog() {
                                 onClick={handleClose}
                                 color="secondary"
                             >
-                                Disagree
+                                {cancelLabel}
                             </Button>
-                            <Button variant="contained" size="small" onClick={handleClose} autoFocus>
-                                Agree
+                            <Button variant="contained" size="small" type={type} onClick={onConfirm} autoFocus>
+                                {confirmLabel}
                             </Button>
                         </DialogActions>
                     </>
